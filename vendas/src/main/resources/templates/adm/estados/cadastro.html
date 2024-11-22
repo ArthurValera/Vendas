@@ -8,14 +8,15 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <title>Olá, mundo!</title>
+    <title>Valera Sistemas - Cadastro </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css"></link>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">
-        <img src="https://toppng.com/uploads/preview/advanced-technology-technology-icon-11550123584mn67laic5o.png" width="30" height="30" alt="">
+    <a class="navbar-brand" href="/adm">
+        <i class="fa-solid fa-microchip" style="color: #999999;"></i>
     </a>
-    <a class="navbar-brand" href="#">Valera Sistemas</a>
+    <a class="navbar-brand" href="/adm">Valera Sistemas</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#conteudoNavbarSuportado" aria-controls="conteudoNavbarSuportado" aria-expanded="false" aria-label="Alterna navegação">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -23,7 +24,7 @@
     <div class="collapse navbar-collapse" id="conteudoNavbarSuportado">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(página atual)</span></a>
+                <a class="nav-link" href="/adm">Home <span class="sr-only">(página atual)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Link</a>
@@ -47,7 +48,8 @@
             <input type="text" class="form-control" id="sigla" th:field="*{sigla}">
         </div>
         <button type="submit" class="btn btn-primary">Salvar</button>
-        <a href="#" class="btn btn-danger">Voltar</a>
+        <a href="/adm" class="btn btn-danger">Voltar</a>
+        <a href="/listaEstado" class="btn btn-success">Listar</a>
     </form>
 </div>
 
