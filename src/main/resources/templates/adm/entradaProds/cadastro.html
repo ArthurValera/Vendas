@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="https://thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <!-- Meta tags obrigatórias -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title>Valera Sistemas - Cadastro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/adm">
+        <i class="fa-solid fa-microchip" style="color: #999999;"></i>
+    </a>
+    <a class="navbar-brand" href="/adm">Valera Sistemas</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#conteudoNavbarSuportado" aria-controls="conteudoNavbarSuportado" aria-expanded="false" aria-label="Alterna navegação">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="conteudoNavbarSuportado">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/adm">Home <span class="sr-only">(página atual)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Pesquisar" aria-label="Pesquisar">
+            <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Pesquisar</button>
+        </form>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <form action="/salvaEntradaProd" th:object="${entradaProd}" method="POST">
+        <div class="form-group">
+            <!-- Formulário de itens -->
+            <div class="row" th:object="${itemEntrada}">
+                <div class="col-md-6 col-sm-12">
+                    <label>Produto:</label>
+                    <select th:field="*{produto}" class="form-control">
+                        <option th:each="prod : ${listaProdutos}" th:value="${prod.id}" th:text="${prod.nome}"></option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <label>Quantidade:</label>
+                    <input type="number" class="form-control" th:field="*{quantidade}">
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <label>Valor de custo:</label>
+                    <input type="number" class="form-control" th:field="*{custo}">
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <label>Preço de venda:</label>
+                    <input type="number" class="form-control" th:field="*{preco}">
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <button name="acao" th:value="itens" style="margin-top: 32px" type="submit" class="btn btn-primary btn-block">Adicionar</button>
+                </div>
+            </div>
+
+            <!-- Dados principais -->
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    <label for="id">ID</label>
+                    <input type="text" readonly class="form-control" id="id" th:field="*{id}">
+                    <label>Observação:</label>
+                    <input type="text" class="form-control" id="obs" th:field="*{obs}">
+                    <label>Funcionário responsável:</label>
+                    <select th:field="*{funcionario}" class="form-control">
+                        <option th:each="func : ${listaFuncionarios}" th:value="${func.id}" th:text="${func.nome}"></option>
+                    </select>
+                    <label>Fornecedor:</label>
+                    <select th:field="*{fornecedor}" class="form-control">
+                        <option th:each="forn : ${listaFornecedores}" th:value="${forn.id}" th:text="${forn.nome}"></option>
+                    </select>
+                    <label>Valor total:</label>
+                    <input type="number" readonly class="form-control" th:field="*{valor}">
+                    <label>Quantidade total:</label>
+                    <input type="number" readonly class="form-control" th:field="*{quantidadeTotal}">
+                    <button type="submit" name="acao" th:value="salvar" class="btn btn-primary mt-3 btn-block">Salvar</button>
+                    <a href="/adm" class="btn btn-danger mt-2 btn-block">Voltar</a>
+                    <a href="/listaEntradaProd" class="btn btn-success mt-2 btn-block">Listar</a>
+                </div>
+
+                <!-- Tabela de itens -->
+                <div class="col-md-8 mt-4 mt-md-0">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="bg-dark text-white">
+                            <tr>
+                                <td>ID</td>
+                                <td>Produto</td>
+                                <td>Quantidade</td>
+                                <td>Custo</td>
+                                <td>Preço</td>
+                                <td>Ação</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="itemEntrada: ${listaItemEntrada}">
+                                <td th:text="${itemEntrada.id}"></td>
+                                <td th:text="${itemEntrada.produto.nome}"></td>
+                                <td th:text="${itemEntrada.quantidade}"></td>
+                                <td th:text="${itemEntrada.custo}"></td>
+                                <td th:text="${itemEntrada.preco}"></td>
+                                <td>
+                                    <a th:href="@{/editaEntradaProd/{id}(id=${itemEntrada.id})}">
+                                        <i class="fa-solid fa-pen" style="color: #0091ff;"></i>
+                                    </a>
+                                    <a th:href="@{/removeEntradaProd/{id}(id=${itemEntrada.id})}">
+                                        <i class="fa-solid fa-trash" style="color: #da1616;"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- JavaScript (Opcional) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3MiykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+</html>

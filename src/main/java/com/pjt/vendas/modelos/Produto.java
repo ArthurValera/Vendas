@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table (name = "produto")
 public class Produto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -13,11 +12,11 @@ public class Produto implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nome;
-    private int estoque;
-    private double custo;
-    private double preco;
-    private double lucro;
-    private double margemLucro;
+    private int estoque = 0;
+    private double custo = 0;
+    private double preco= 0;
+    private double lucro = 0;
+    private double margemLucro = 0;
 
     public Long getId() {
         return id;
