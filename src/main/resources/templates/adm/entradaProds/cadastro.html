@@ -81,7 +81,7 @@
                         <option th:each="forn : ${listaFornecedores}" th:value="${forn.id}" th:text="${forn.nome}"></option>
                     </select>
                     <label>Valor total:</label>
-                    <input type="number" readonly class="form-control" th:field="*{valor}">
+                    <input type="number" readonly class="form-control" th:field="*{valorTotal}">
                     <label>Quantidade total:</label>
                     <input type="number" readonly class="form-control" th:field="*{quantidadeTotal}">
                     <button type="submit" name="acao" th:value="salvar" class="btn btn-primary mt-3 btn-block">Salvar</button>

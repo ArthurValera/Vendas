@@ -56,45 +56,60 @@ public class EntradaControle {
         this.listaItemEntrada = itemEntradaRep.buscarPorEntrada(id);
         return cadastrar(entradaProd.get(), new ItemEntrada());
     }
+    @GetMapping("/removeEntradaProd/{id}")
+    public ModelAndView remover(@PathVariable("id") Long id) {
+        Optional<EntradaProd> entradaProd = entradaRep.findById(id);
 
-//    @GetMapping("/removeEntradaProd/{id}")
-//    public ModelAndView remover(@PathVariable("id") Long id) {
-//        Optional<EntradaProd> entradaProd = entradaRep.findById(id);
-//        entradaRep.delete(entradaProd.get());
-//        return listar();
-//    }
+        if (entradaProd.isPresent()) {
+            // Remover os itens relacionados primeiro
+            List<ItemEntrada> itens = itemEntradaRep.buscarPorEntrada(id);
+            for (ItemEntrada item : itens) {
+                itemEntradaRep.delete(item);
+            }
+
+            // Agora, remover a entrada principal
+            entradaRep.delete(entradaProd.get());
+        }
+
+        return listar();
+    }
+
 
     @PostMapping("/salvaEntradaProd")
-    public ModelAndView salvar(String acao, EntradaProd entradaProd, ItemEntrada itemEntrada, BindingResult result){
-        if(result.hasErrors()){
+    public ModelAndView salvar(String acao, EntradaProd entradaProd, ItemEntrada itemEntrada, BindingResult result) {
+        if (result.hasErrors()) {
             return cadastrar(entradaProd, itemEntrada);
         }
+
         if (acao.equals("itens")) {
+            // Adiciona o item à lista e atualiza os totais
             this.listaItemEntrada.add(itemEntrada);
-            entradaProd.setValorTotal((entradaProd.getValorTotal() + itemEntrada.getPreco()) *itemEntrada.getQuantidade());
+            entradaProd.setValorTotal(entradaProd.getValorTotal() + (itemEntrada.getPreco() * itemEntrada.getQuantidade()));
             entradaProd.setQuantidadeTotal(entradaProd.getQuantidadeTotal() + itemEntrada.getQuantidade());
-
-            this.listaItemEntrada.add(itemEntrada);
         } else if (acao.equals("salvar")) {
+            // Salva a entrada e seus itens
             entradaRep.saveAndFlush(entradaProd);
 
-            for(ItemEntrada it: listaItemEntrada){
-            it.setEntradaProd(entradaProd);
-            itemEntradaRep.saveAndFlush(it);
+            for (ItemEntrada it : listaItemEntrada) {
+                it.setEntradaProd(entradaProd);
+                itemEntradaRep.saveAndFlush(it);
 
-            Optional<Produto> prod = produtoRep.findById(it.getProduto().getId());
-            Produto produto = prod.get();
-
-            produto.setEstoque(produto.getEstoque() + it.getQuantidade());
-            produto.setPreco(it.getPreco());
-            produto.setCusto(it.getCusto());
-            produtoRep.saveAndFlush(produto);
-
-            this.listaItemEntrada = new ArrayList<>();
+                // Atualiza o estoque e valores do produto
+                Optional<Produto> prod = produtoRep.findById(it.getProduto().getId());
+                if (prod.isPresent()) {
+                    Produto produto = prod.get();
+                    produto.setEstoque(produto.getEstoque() + it.getQuantidade());
+                    produto.setPreco(it.getPreco());
+                    produto.setCusto(it.getCusto());
+                    produtoRep.saveAndFlush(produto);
+                }
             }
-            entradaRep.saveAndFlush(entradaProd);
+
+            // Limpa a lista de itens após salvar
+            this.listaItemEntrada = new ArrayList<>();
             return cadastrar(new EntradaProd(), new ItemEntrada());
         }
+
         return cadastrar(entradaProd, new ItemEntrada());
     }
 

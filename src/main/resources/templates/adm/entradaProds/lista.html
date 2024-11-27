@@ -59,9 +59,8 @@
             <td th:text="${entradaProd.fornecedor.nome}"></td>
             <td th:text="${entradaProd.funcionario.nome}"></td>
             <td th:text="${entradaProd.dataEntrada}"></td>
-            <td th:text="${entradaProd.valor}"></td>
+            <td th:text="${entradaProd.valorTotal}"></td>
             <td>
-                <a th:href="@{/editaEntradaProd/{id}(id=${entradaProd.id})}"><i class="fa-solid fa-pen" style="color: #0091ff;"></i></a>
                 <a th:href="@{/removeEntradaProd/{id}(id=${entradaProd.id})}"><i class="fa-solid fa-trash" style="color: #da1616;"></i></a>
             </td>
         </tr>
@@ -80,14 +79,14 @@
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 <script>
     $(document).ready( function () {
-    $('#tabela').DataTable();
-    } );
+     $('#tabela').DataTable();
+     } );
 
-    var table = new DataTable('#tabela', {
-    language: {
-        url: '//cdn.datatables.net/plug-ins/2.1.8/i18n/pt-BR.json',
-    },
-});
+     var table = new DataTable('#tabela', {
+     language: {
+         url: 'https://cdn.datatables.net/plug-ins/2.1.8/i18n/pt-BR.json',
+     },
+ });
 </script>
 </body>
 </html>
